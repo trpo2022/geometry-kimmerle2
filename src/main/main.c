@@ -56,8 +56,8 @@ int main()
         printf("expected '<double>'\n");
         return -6;
     }
-    
-    if (radius <= 0){
+
+    if (radius <= 0) {
         printf("The radius cannot be negative or equal 0\n");
         return -7;
     }
@@ -81,7 +81,6 @@ int main()
     printf("radius = %lf\n", radius);
     printf("perimeter = %lf \n", perimeterCircle(radius));
     printf("area = %lf\n \n", areaCircle(radius));
-
 
     return 0;
 }
