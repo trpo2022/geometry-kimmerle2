@@ -4,7 +4,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
 float for_treug_area(float digit_treug[])
 {
     float area, p1, a, b, c, x1 = digit_treug[2], x2 = digit_treug[4],
@@ -36,9 +35,6 @@ float for_treug_perimetr(float digit_treug[])
     }
     return perimetr;
 }
-
-
-
 
 float for_circle_area(float digit_circle[])
 {
