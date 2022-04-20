@@ -10,29 +10,18 @@ bin/main: obj/src/main/main.o obj/src/libmain/libmain.a
 obj/src/main/main.o: src/main/main.c
 	gcc -c -I src $(CFLAGS) -o $@ $< -lm
 
-obj/src/libmain/libmain.a: obj/src/libmain/skipCircle.o obj/src/libmain/skipSign.o obj/src/libmain/skipDigit.o obj/src/libmain/checkEndStr.o obj/src/libmain/perimeterCircle.o obj/src/libmain/areaCircle.o 
+obj/src/libmain/libmain.a: obj/src/libmain/Area_and_Perimetr.o obj/src/libmain/Read.o
 	ar rcs $@ $^
 
 
 
 
-obj/src/libmain/skipCircle.o: src/libmain/skipCircle.c
+obj/src/libmain/Area_and_Perimetr.o: src/libmain/Area_and_Perimetr.c
 	gcc -c -I src $(CFLAGS) -o $@ $< -lm
 
-obj/src/libmain/skipSign.o: src/libmain/skipSign.c
+obj/src/libmain/Read.o: src/libmain/Read.c
 	gcc -c -I src $(CFLAGS) -o $@ $< -lm	
 	
-obj/src/libmain/skipDigit.o: src/libmain/skipDigit.c
-	gcc -c -I src $(CFLAGS) -o $@ $< -lm
-
-obj/src/libmain/checkEndStr.o: src/libmain/checkEndStr.c
-	gcc -c -I src $(CFLAGS) -o $@ $< -lm
-
-obj/src/libmain/perimeterCircle.o: src/libmain/perimeterCircle.c
-	gcc -c -I src $(CFLAGS) -o $@ $< -lm	
-
-obj/src/libmain/areaCircle.o: src/libmain/areaCircle.c
-	gcc -c -I src $(CFLAGS) -o $@ $< -lm	
 
 
 
