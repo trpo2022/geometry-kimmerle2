@@ -1,8 +1,10 @@
 #include "Area_and_Perimetr.h"
+#include "Check_intersection.h"
 #include "Read.h"
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
+float all[9] = {0};
 
 float for_treug_area(float digit_treug[])
 {
@@ -34,6 +36,22 @@ float for_treug_perimetr(float digit_treug[])
         return 0;
     }
     return perimetr;
+}
+
+void for_all_circle(float digit_treug[], float digit_circle[])
+{
+    int i;
+    for (i = 0; i < 6; i++) {
+        all[i] = digit_treug[i];
+    }
+    for (i = 0; i < 3; i++) {
+        all[i + 6] = digit_circle[i];
+    }
+    if (cross(all)) {
+        printf("NOT CROSSING\n");
+    } else {
+        printf("CROSSING\n");
+    }
 }
 
 float for_circle_area(float digit_circle[])
