@@ -1,32 +1,62 @@
+CC = gcc
+
+APP_NAME = main
+LIB_NAME = libmain
+TEST_NAME = test
+
 CFLAGS = -Wall -Wextra -Werror
+CPPFLAGS = -I src -MP -MMD
+LDFLAGS =
+LDLIBS =
 
-all: main
+BIN_DIR = bin
+OBJ_DIR = obj
+SRC_DIR = src
+TEST_DIR = test
 
-main: bin/main
+APP_PATH = bin/main
+TEST_PATH = bin/test
+LIB_PATH = obj/src/libmain/libmain.a
 
-bin/main: obj/src/main/main.o obj/src/libmain/libmain.a
-	gcc $(CFLAGS) -o $@ $^ -lm
+SRC_EXT = c
 
-obj/src/main/main.o: src/main/main.c
-	gcc -c -I src $(CFLAGS) -o $@ $< -lm
+APP_SOURCES = $(shell find src/main -name '*.$(SRC_EXT)')
+APP_OBJECTS = $(APP_SOURCES:$(SRC_DIR)/%.$(SRC_EXT)=$(OBJ_DIR)/$(SRC_DIR)/%.o)
 
-obj/src/libmain/libmain.a: obj/src/libmain/Area_and_Perimetr.o obj/src/libmain/Read.o
+TEST_SOURCES = $(shell find test -name '*.$(SRC_EXT)')
+TEST_OBJECTS = $(TEST_SOURCES:test/%.c=obj/test/%.o)
+
+LIB_SOURCES = $(shell find $(SRC_DIR)/$(LIB_NAME) -name '*.$(SRC_EXT)')
+LIB_OBJECTS = $(LIB_SOURCES:$(SRC_DIR)/%.$(SRC_EXT)=$(OBJ_DIR)/$(SRC_DIR)/%.o)
+
+DEPS = $(APP_OBJECTS:.o=.d) $(LIB_OBJECTS:.o=.d) $(TEST_OBJECTS:.o=.d)
+
+.PHONY: test clean
+
+all: bin/main
+
+-include $(DEPS)
+
+$(APP_PATH): $(APP_OBJECTS) $(LIB_PATH)
+	$(CC) $(CFLAGS) $(CPPFLAGS) $^ -o $@ $(LDFLAGS) $(LDLIBS) -lm
+
+$(LIB_PATH): $(LIB_OBJECTS)
 	ar rcs $@ $^
 
+$(OBJ_DIR)/%.o: %.c
+	$(CC) -c $(CFLAGS) $(CPPFLAGS) -I thirdparty $< -o $@ -lm
 
-
-
-obj/src/libmain/Area_and_Perimetr.o: src/libmain/Area_and_Perimetr.c
-	gcc -c -I src $(CFLAGS) -o $@ $< -lm
-
-obj/src/libmain/Read.o: src/libmain/Read.c
-	gcc -c -I src $(CFLAGS) -o $@ $< -lm	
 	
+test: $(TEST_PATH)
 
 
+-include $(DEPS)
 
-.PHONY: clean
+$(TEST_PATH): $(TEST_OBJECTS) $(LIB_PATH)
+	$(CC) $(CFLAGS) -I thirdparty $^ -o $@ $(LDFLAGS) $(LDLIBS) -lm
+
 
 clean:
-	rm obj/src/libmain/*.a obj/src/libmain/*.o obj/src/main/*.o bin/main
-
+	$(RM) $(APP_PATH) $(TEST_PATH) $(LIB_PATH)
+	find $(OBJ_DIR) -name '*.o' -exec $(RM) '{}' \;
+	find $(OBJ_DIR) -name '*.d' -exec $(RM) '{}' \;
