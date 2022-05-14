@@ -44,6 +44,7 @@ void circle_f(char str[])
                for_circle_perimetr(digit_circle));
     }
     printf("\n");
+    for_all_circle(digit_treug, digit_circle);
 }
 
 void triangle_f(char str[])
